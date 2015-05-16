@@ -336,6 +336,35 @@ CREATE TABLE `guild_ranks`
 	FOREIGN KEY (`guild_id`) REFERENCES `guilds`(`id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
+CREATE TABLE `guild_wars`
+(
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`guild_id` INT NOT NULL,
+	`enemy_id` INT NOT NULL,
+	`begin` BIGINT NOT NULL DEFAULT 0,
+	`end` BIGINT NOT NULL DEFAULT 0,
+	`frags` INT UNSIGNED NOT NULL DEFAULT 0,
+	`payment` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+	`guild_kills` INT UNSIGNED NOT NULL DEFAULT 0,
+	`enemy_kills` INT UNSIGNED NOT NULL DEFAULT 0,
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY (`id`), KEY `status` (`status`),
+	KEY `guild_id` (`guild_id`), KEY `enemy_id` (`enemy_id`),
+	FOREIGN KEY (`guild_id`) REFERENCES `guilds`(`id`) ON DELETE CASCADE,
+	FOREIGN KEY (`enemy_id`) REFERENCES `guilds`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE `guild_kills`
+(
+	`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`guild_id` INT NOT NULL,
+	`war_id` INT NOT NULL,
+	`death_id` INT NOT NULL,
+	FOREIGN KEY (`guild_id`) REFERENCES `guilds`(`id`) ON DELETE CASCADE,
+	FOREIGN KEY (`war_id`) REFERENCES `guild_wars`(`id`) ON DELETE CASCADE,
+	FOREIGN KEY (`death_id`) REFERENCES `player_deaths`(`id`) ON DELETE CASCADE
+) ENGINE = InnoDB;
+
 CREATE TABLE `bans`
 (
 	`id` INT UNSIGNED NOT NULL auto_increment,
@@ -370,7 +399,7 @@ CREATE TABLE `server_config`
 	UNIQUE (`config`)
 ) ENGINE = InnoDB;
 
-INSERT INTO `server_config` VALUES ('db_version', 26);
+INSERT INTO `server_config` VALUES ('db_version', 25);
 
 CREATE TABLE `server_motd`
 (
