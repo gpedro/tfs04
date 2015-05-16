@@ -314,6 +314,7 @@ CREATE TABLE `guilds`
 	`creationdata` INT NOT NULL,
 	`checkdata` INT NOT NULL,
 	`motd` VARCHAR(255) NOT NULL,
+	`balance` BIGINT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
 	UNIQUE (`name`, `world_id`)
 ) ENGINE = InnoDB;
