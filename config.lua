@@ -103,12 +103,13 @@
 	forceSlowConnectionsToDisconnect = false
 	loginOnlyWithLoginServer = false
 	premiumPlayerSkipWaitList = false
+	enableCast = true
 
 	-- Database
 	-- NOTE: sqlFile is used only by sqlite database, and sqlKeepAlive by mysql database.
 	-- To disable sqlKeepAlive such as mysqlReadTimeout use 0 value.
 	-- encryptionType can be plain, md5, sha1, sha256, sha512 or vahash.
-	sqlType = "sqlite"
+	sqlType = "mysql"
 	sqlHost = "localhost"
 	sqlPort = 3306
 	sqlUser = "root"
@@ -118,7 +119,7 @@
 	sqlKeepAlive = 0
 	mysqlReadTimeout = 10
 	mysqlWriteTimeout = 10
-	encryptionType = "sha1"
+	encryptionType = "plain"
 
 	-- Deathlist
 	deathListEnabled = true
@@ -151,13 +152,13 @@
 	guildHalls = false
 
 	-- Item usage
-	timeBetweenActions = 200
+	timeBetweenActions = 500
 	timeBetweenExActions = 1000
 	hotkeyAimbotEnabled = true
 
 	-- Map
 	-- NOTE: storeTrash costs more memory, but will perform alot faster cleaning.
-	mapName = "forgotten.otbm.gz"
+	mapName = "forgotten.otbm"
 	mapAuthor = "Komic"
 	randomizeTiles = true
 	storeTrash = true
@@ -211,7 +212,7 @@
 	-- Saving-related
 	-- useHouseDataStorage usage may be found at README.
 	saveGlobalStorage = true
-	useHouseDataStorage = false
+	useHouseDataStorage = true
 	storePlayerDirection = false
 
 	-- Loot
@@ -221,7 +222,7 @@
 	monsterLootMessageType = 25
 
 	-- Ghost mode
-	ghostModeInvisibleEffect = false
+	ghostModeInvisibleEffect = true
 	ghostModeSpellEffects = true
 
 	-- Limits

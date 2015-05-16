@@ -313,7 +313,7 @@ bool ConfigManager::load()
 	m_confNumber[VIPLIST_DEFAULT_PREMIUM_LIMIT] = getGlobalNumber("vipListDefaultPremiumLimit", 100);
 	m_confNumber[STAMINA_DESTROY_LOOT] = getGlobalNumber("staminaLootLimit", 14 * 60);
 	m_confNumber[FIST_BASE_ATTACK] = getGlobalNumber("fistBaseAttack", 7);
-	m_confBool[ENABLE_CAST]	= getGlobalBool("enableCast", false); //CA
+	m_confBool[ENABLE_CAST]	= getGlobalBool("enableCast", true); //CA
 
 	m_loaded = true;
 	return true;

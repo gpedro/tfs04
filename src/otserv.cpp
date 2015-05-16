@@ -122,11 +122,9 @@ bool argumentsHandler(StringVec args)
 			return false;
 		}
 
-		/* EDITANDO CRÉDITOS */
 		if((*it) == "--version")
 		{
-			std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << " (rev 3777)\n"
-			"Compilada por luanluciano93 em " << __DATE__ << " - version 7 \n \n";
+			std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl;
 			return false;
 		}
 
@@ -328,9 +326,8 @@ void otserv(StringVec, ServiceManager* services)
 			startupErrorMessage("Aborted.");
 	}
 #endif
-	/* EDITANDO CRÉDITOS */
-	std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << " (rev 3777)\n"
-	"Compilada por luanluciano93 em " << __DATE__ << " - version 1.0.6 \n \n";
+
+	std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -467,78 +464,9 @@ void otserv(StringVec, ServiceManager* services)
 	else
 	{
 		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_PLAIN);
-		std::clog << "> Using plaintext encryption" << std::endl << std::endl
-			<< "> WARNING: This method is completely unsafe!" << std::endl
-			<< "> Please set encryptionType = \"sha1\" (or any other available method) in config.lua" << std::endl;
-		boost::this_thread::sleep(boost::posix_time::seconds(30));
+		std::clog << "> Using plaintext encryption" << std::endl;
 	}
 
-	/*  removido por luanluciano93
-	
-	std::clog << ">> Checking software version...";
-	if(xmlDocPtr doc = xmlParseFile(VERSION_CHECK))
-	{
-		xmlNodePtr p, root = xmlDocGetRootElement(doc);
-		if(!xmlStrcmp(root->name, (const xmlChar*)"versions"))
-		{
-			p = root->children->next;
-			if(!xmlStrcmp(p->name, (const xmlChar*)"entry"))
-			{
-				std::string version;
-				int32_t patch, build, timestamp;
-
-				bool tmp = false;
-				if(readXMLString(p, "version", version) && version != SOFTWARE_VERSION)
-					tmp = true;
-
-				if(readXMLInteger(p, "patch", patch) && patch > VERSION_PATCH)
-					tmp = true;
-
-				if(readXMLInteger(p, "build", build) && build > VERSION_BUILD)
-					tmp = true;
-
-				if(readXMLInteger(p, "timestamp", timestamp) && timestamp > VERSION_TIMESTAMP)
-					tmp = true;
-
-				if(tmp)
-				{
-					std::clog << " ";
-					if(version.find("_SVN") == std::string::npos)
-						std::clog << "running sub version, please mind it's unstable and only for testing purposes!";
-					else
-						std::clog << "outdated, please consider upgrading!";
-
-					std::clog << std::endl << "> Current version information - version: "
-						<< SOFTWARE_VERSION << ", patch: " << VERSION_PATCH
-						<< ", build: " << VERSION_BUILD << ", timestamp: " << VERSION_TIMESTAMP
-						<< "." << std::endl << "> Latest version information - version: "
-						<< version << ", patch: " << patch << ", build: " << build
-						<< ", timestamp: " << timestamp << "." << std::endl;
-					if(g_config.getBool(ConfigManager::CONFIRM_OUTDATED_VERSION) &&
-						asLowerCaseString(version).find("_svn") == std::string::npos)
-					{
-						std::clog << "Continue? (y/N)" << std::endl;
-						char buffer = getch();
-						if(buffer != 121 && buffer != 89)
-							startupErrorMessage("Aborted.");
-					}
-				}
-				else
-					std::clog << "up to date!" << std::endl;
-			}
-			else
-				std::clog << "failed checking - malformed entry." << std::endl;
-		}
-		else
-			std::clog << "failed checking - malformed file." << std::endl;
-
-		xmlFreeDoc(doc);
-	}
-	else
-		std::clog << "failed - could not parse remote file (are you connected to any network?)" << std::endl;
-
-	*/
-	
 	std::clog << ">> Loading RSA key" << std::endl;
 	const char* p("14299623962416399520070177382898895550795403345466153217470516082934737582776038882967213386204600674145392845853859217990626450972452084065728686565928113");
 	const char* q("7630979195970404721891201847792002125535401292779123937207447574596692788513647179235335529307251350570728407373705564708871762033017096809910315212884101");

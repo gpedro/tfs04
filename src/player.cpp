@@ -895,9 +895,8 @@ bool Player::canWalkthrough(const Creature* creature) const
 	if(!player)
 		return false;
 
-	if((((g_game.getWorldType() == WORLDTYPE_OPTIONAL &&
-		!player->isEnemy(this, true) &&
-		player->getVocation()->isAttackable()) || (player->getVocation()->isAttackable() &&
+	if((((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
+		player->getVocation()->isAttackable()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || (player->getVocation()->isAttackable() &&
 		player->getLevel() < (uint32_t)g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) && player->getTile()->ground &&
 		Item::items[player->getTile()->ground->getID()].walkStack) && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
 		|| player->getAccess() <= getAccess()))
@@ -1815,6 +1814,9 @@ void Player::addMessageBuffer()
 
 void Player::removeMessageBuffer()
 {
+	if(isAccountManager())
+		return;
+
 	if(hasFlag(PlayerFlag_CannotBeMuted))
 		return;
 

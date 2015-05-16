@@ -1206,7 +1206,8 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 				&& tmpTile->ground && !tmpTile->hasProperty(BLOCKSOLID))
 			{
 				flags = flags | FLAG_IGNOREBLOCKITEM | FLAG_IGNOREBLOCKCREATURE;
-				destPos.z--;
+				if(!tmpTile->floorChange())
+					destPos.z--;
 			}
 		}
 		else if(currentPos.z != 7 && (!(tmpTile = map->getTile(destPos)) || (!tmpTile->ground &&
@@ -3723,26 +3724,6 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type, c
 		return false;
 	}
 
-	/* ANTI-DIVULGAÇÃO - LUANLUCIANO 93 */
-	if(
-		int(text.find("servegame")) > 0 || 
-		int(text.find(".servegame")) > 0 || 
-		int(text.find("no-ip")) > 0 || 
-		int(text.find(".no-ip")) > 0 || 
-		int(text.find(".net")) > 0 ||
-		int(text.find(".com")) > 0 ||
-		int(text.find(".org")) > 0 || 
-		int(text.find("biz")) > 0 || 
-		int(text.find(".biz")) > 0 ||
-		int(text.find(".br")) > 0 ||
-		int(text.find("sytes")) > 0 || 
-		int(text.find(".sytes")) > 0 ||
-		int(text.find(".info")) > 0
-	)
-	{
-		player->sendTextMessage(MSG_STATUS_SMALL, "You can't send this message.");
-		return false;
-	}
 	if(player->isAccountManager())
 	{
 		if(mute)
