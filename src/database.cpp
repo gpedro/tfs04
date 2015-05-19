@@ -24,9 +24,6 @@
 #ifdef __USE_SQLITE__
 #include "databasesqlite.h"
 #endif
-#ifdef __USE_PGSQL__
-#include "databasepgsql.h"
-#endif
 
 #if defined MULTI_SQL_DRIVERS
 #include "configmanager.h"
@@ -48,10 +45,6 @@ Database* _Database::getInstance()
 #ifdef __USE_SQLITE__
 		if(g_config.getString(ConfigManager::SQL_TYPE) == "sqlite")
 			_instance = new DatabaseSQLite;
-#endif
-#ifdef __USE_PGSQL__
-		if(g_config.getString(ConfigManager::SQL_TYPE) == "pgsql")
-			_instance = new DatabasePgSQL;
 #endif
 #else
 		_instance = new Database;

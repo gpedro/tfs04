@@ -64,15 +64,6 @@ bool DatabaseManager::optimizeTables()
 			return true;
 		}
 
-		case DATABASE_ENGINE_POSTGRESQL:
-		{
-			if(!db->query("VACUUM FULL;"))
-				break;
-
-			std::clog << "> Optimized database." << std::endl;
-			return true;
-		}
-
 		default:
 			break;
 	}
@@ -93,10 +84,6 @@ bool DatabaseManager::triggerExists(std::string trigger)
 		case DATABASE_ENGINE_MYSQL:
 			query << "SELECT `TRIGGER_NAME` FROM `information_schema`.`triggers` WHERE `TRIGGER_SCHEMA` = " << db->escapeString(g_config.getString(ConfigManager::SQL_DB)) << " AND `TRIGGER_NAME` = " << db->escapeString(trigger) << ";";
 			break;
-
-		case DATABASE_ENGINE_POSTGRESQL:
-			//TODO: PostgreSQL support
-			return true;
 
 		default:
 			return false;
@@ -123,10 +110,6 @@ bool DatabaseManager::tableExists(std::string table)
 		case DATABASE_ENGINE_MYSQL:
 			query << "SELECT `TABLE_NAME` FROM `information_schema`.`tables` WHERE `TABLE_SCHEMA` = " << db->escapeString(g_config.getString(ConfigManager::SQL_DB)) << " AND `TABLE_NAME` = " << db->escapeString(table) << ";";
 			break;
-
-		case DATABASE_ENGINE_POSTGRESQL:
-			//TODO: PostgreSQL support
-			return true;
 
 		default:
 			return false;
@@ -162,10 +145,6 @@ bool DatabaseManager::isDatabaseSetup()
 			//a pre-setup sqlite database is already included
 			return true;
 
-		case DATABASE_ENGINE_POSTGRESQL:
-			//TODO: PostgreSQL support
-			return true;
-
 		default:
 			break;
 	}
@@ -189,12 +168,6 @@ uint32_t DatabaseManager::updateDatabase()
 {
 	Database* db = Database::getInstance();
 	uint32_t version = getDatabaseVersion();
-	if(version < 6 && db->getDatabaseEngine() == DATABASE_ENGINE_POSTGRESQL)
-	{
-		std::clog << "> WARNING: Couldn't update database - PostgreSQL support available since version 6, please use latest pgsql.sql schema." << std::endl;
-		registerDatabaseConfig("db_version", 6);
-		return 6;
-	}
 
 	DBQuery query;
 	switch(version)
@@ -511,7 +484,6 @@ uint32_t DatabaseManager::updateDatabase()
 				}
 
 				case DATABASE_ENGINE_SQLITE:
-				case DATABASE_ENGINE_POSTGRESQL:
 				default:
 				{
 					//TODO
@@ -592,7 +564,6 @@ uint32_t DatabaseManager::updateDatabase()
 				}
 
 				case DATABASE_ENGINE_SQLITE:
-				case DATABASE_ENGINE_POSTGRESQL:
 				default:
 				{
 					//TODO
@@ -648,13 +619,6 @@ uint32_t DatabaseManager::updateDatabase()
 					for(uint32_t i = 0; i < sizeof(queryList) / sizeof(std::string); i++)
 						db->query(queryList[i]);
 
-					break;
-				}
-
-				case DATABASE_ENGINE_POSTGRESQL:
-				default:
-				{
-					//TODO
 					break;
 				}
 			}
@@ -743,13 +707,6 @@ uint32_t DatabaseManager::updateDatabase()
 
 					break;
 				}
-
-				case DATABASE_ENGINE_POSTGRESQL:
-				default:
-				{
-					//TODO
-					break;
-				}
 			}
 
 			registerDatabaseConfig("db_version", 15);
@@ -785,13 +742,6 @@ uint32_t DatabaseManager::updateDatabase()
 					for(uint32_t i = 0; i < sizeof(queryList) / sizeof(std::string); i++)
 						db->query(queryList[i]);
 
-					break;
-				}
-
-				case DATABASE_ENGINE_POSTGRESQL:
-				default:
-				{
-					//TODO
 					break;
 				}
 			}
@@ -1197,7 +1147,7 @@ void DatabaseManager::checkEncryption()
 
 					Database* db = Database::getInstance();
 					DBQuery query;
-					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL && db->getDatabaseEngine() != DATABASE_ENGINE_POSTGRESQL)
+					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL)
 					{
 						if(DBResult* result = db->storeQuery("SELECT `id`, `password`, `key` FROM `accounts`;"))
 						{
@@ -1228,7 +1178,7 @@ void DatabaseManager::checkEncryption()
 
 					Database* db = Database::getInstance();
 					DBQuery query;
-					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL && db->getDatabaseEngine() != DATABASE_ENGINE_POSTGRESQL)
+					if(db->getDatabaseEngine() != DATABASE_ENGINE_MYSQL)
 					{
 						if(DBResult* result = db->storeQuery("SELECT `id`, `password`, `key` FROM `accounts`;"))
 						{
@@ -1561,10 +1511,6 @@ END;",
 
 			break;
 		}
-
-		case DATABASE_ENGINE_POSTGRESQL:
-			//TODO: PostgreSQL support
-			break;
 
 		default:
 			break;

@@ -43,12 +43,6 @@ class MySQLResult;
 class DatabaseSQLite;
 class SQLiteResult;
 
-#elif defined(__USE_PGSQL__)
-#define DATABASE_CLASS DatabasePgSQL
-#define RESULT_CLASS PgSQLResult
-class DatabasePgSQL;
-class PgSQLResult;
-
 #endif
 #endif
 
@@ -307,8 +301,6 @@ class DBInsert
 #include "databasemysql.h"
 #elif defined(__USE_SQLITE__)
 #include "databasesqlite.h"
-#elif defined(__USE_PGSQL__)
-#include "databasepgsql.h"
 #endif
 #endif
 

@@ -84,8 +84,6 @@ AC_SUBST(DEBUG_FLAGS)
 
 AM_CONDITIONAL(USE_MYSQL, false)
 useMySQL=no
-AM_CONDITIONAL(USE_PGSQL, false)
-usePostgreSQL=no
 AM_CONDITIONAL(USE_SQLITE, false)
 useSQLite=no
 
@@ -95,14 +93,6 @@ AC_ARG_ENABLE(mysql, [  --enable-mysql		enable MySQL support], [
 	MYSQL_FLAGS=-D__USE_MYSQL__
 	AC_SUBST(MYSQL_FLAGS)
 	useMySQL=yes
-])
-
-# check if we want postgresql enabled
-AC_ARG_ENABLE(pgsql, [  --enable-pgsql		enable PostgreSQL support], [
-	AM_CONDITIONAL(USE_PGSQL, true)
-	PGSQL_FLAGS="-D__USE_PGSQL__ -I`pg_config --includedir`"
-	AC_SUBST(PGSQL_FLAGS)
-	usePostgreSQL=yes
 ])
 
 # check if we want sqlite enabled
@@ -220,13 +210,6 @@ if test -n "$MYSQL_FLAGS"; then
 	AC_SUBST(MYSQL_LIBS)
 fi
 
-# check for postgresql if it is enabled
-if test -n "$PGSQL_FLAGS"; then
-	AC_CHECK_HEADERS([`pg_config --includedir`/libpq-fe.h],[PGSQL_LIBS=-lpg],[AC_MSG_ERROR("PostgreSQL headers missing.")])
-	AC_CHECK_LIB(pq, main,[],[AC_MSG_ERROR("Linking against libpq failed.")])
-	AC_SUBST(PGSQL_LIBS)
-fi
-
 # check for sqlite if it is enabled
 if test -n "$SQLITE_FLAGS"; then
 	AC_CHECK_HEADERS([sqlite3.h],[SQLITE_LIBS=-lsqlite3],[AC_MSG_ERROR("SQLite3 headers missing.")])
@@ -236,12 +219,10 @@ fi
 
 if test "$useMySQL" = "no" ; then
 	if test "$useSQLite" = "no" ; then
-		if test "$usePostgreSQL" = "no" ; then
-			echo Error: no database driver was enabled! To enable a database driver, configure with --enable-\<dbdriver\> \(example: --enable-mysql\).
-			echo
-			exit 1
-			return 1
-		fi
+		echo Error: no database driver was enabled! To enable a database driver, configure with --enable-\<dbdriver\> \(example: --enable-mysql\).
+		echo
+		exit 1
+		return 1
 	fi
 fi
 AC_CONFIG_FILES([Makefile])
@@ -263,7 +244,6 @@ echo Using LuaJIT................ : $luaJIT
 echo
 echo Build with MySQL............ : $useMySQL
 echo Build with SQLite........... : $useSQLite
-echo Build with PostgreSQL....... : $usePostgreSQL
 echo
 
 echo Configure complete, now you may type \'./build.sh\'.
