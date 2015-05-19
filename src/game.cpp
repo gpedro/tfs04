@@ -1443,20 +1443,6 @@ bool Game::playerMoveItem(uint32_t playerId, const Position& fromPos,
 		player->sendCancelMessage(RET_CANNOTTHROW);
 		return false;
 	}
-	
-	/* Corrigido ElfBot Anti-Push (Anti-Crash) */
-	uint16_t items[] = {2148, 2152, 2160, 3976, 2599, 7636, 7635, 7634};
-	uint16_t n = 0;
-	for (n = 0; n < sizeof(items) / sizeof(uint16_t); n++){
-		if(item->getID() == items[n] && player->hasCondition(CONDITION_EXHAUST, 1)){
-			player->sendTextMessage(MSG_STATUS_SMALL, "Please wait a few seconds to move this item.");
-		return false;
-		}
-	}
-
-	if(Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
-	player->addCondition(condition);
-	/* end */
 
 	ReturnValue ret = internalMoveItem(player, fromCylinder, toCylinder, toIndex, item, count, NULL);
 	if(ret == RET_NOERROR)
@@ -3119,6 +3105,8 @@ bool Game::playerAcceptTrade(uint32_t playerId)
 
 	player->sendTradeClose();
 	tradePartner->sendTradeClose();
+	IOLoginData::getInstance()->savePlayer(player);
+	IOLoginData::getInstance()->savePlayer(tradePartner);
 	return success;
 }
 
@@ -3323,6 +3311,9 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	if(!player || player->isRemoved())
 		return false;
 
+	if(player->hasCondition(CONDITION_EXHAUST, 1))
+		return false;
+
 	int32_t onBuy, onSell;
 	Npc* merchant = player->getShopOwner(onBuy, onSell);
 	if(!merchant)
@@ -3339,6 +3330,9 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_BUY))
 		return false;
 
+	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
+		player->addCondition(conditiontrade);
+
 	merchant->onPlayerTrade(player, SHOPEVENT_BUY, onBuy, it.id, subType, amount, ignoreCap, inBackpacks);
 	return true;
 }
@@ -3347,6 +3341,9 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 {
 	Player* player = getPlayerByID(playerId);
 	if(!player || player->isRemoved())
+		return false;
+
+	if(player->hasCondition(CONDITION_EXHAUST, 2))
 		return false;
 
 	int32_t onBuy, onSell;
@@ -3364,6 +3361,9 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_SELL))
 		return false;
+
+	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 2))
+		player->addCondition(conditiontrade);
 
 	merchant->onPlayerTrade(player, SHOPEVENT_SELL, onSell, it.id, subType, amount);
 	return true;
