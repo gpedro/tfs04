@@ -4353,7 +4353,7 @@ bool Game::combatChangeHealth(CombatType_t combatType, Creature* attacker, Creat
 			if(combatType != COMBAT_HEALING)
 				addMagicEffect(list, targetPos, MAGIC_EFFECT_WRAPS_BLUE);
 
-			addAnimatedText(list, targetPos, g_config.getNumber(ConfigManager::HEALTH_HEALING_COLOR), buffer); // add por luanluciano83
+			addAnimatedText(list, targetPos, g_config.getNumber(ConfigManager::HEALTH_HEALING_COLOR), buffer);
 		}
 	}
 	else
