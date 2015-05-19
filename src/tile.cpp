@@ -681,7 +681,7 @@ ReturnValue Tile::__queryAdd(int32_t, const Thing* thing, uint32_t,
 
 		const uint32_t itemLimit = g_config.getNumber(
 				hasFlag(TILESTATE_PROTECTIONZONE) ? ConfigManager::PROTECTION_TILE_LIMIT : ConfigManager::TILE_LIMIT);
-		if(itemLimit && getThingCount() > itemLimit)
+		if(itemLimit && getThingCount() > itemLimit && !item->getMagicField())
 			return RET_TILEISFULL;
 
 		bool hasHangable = false, supportHangable = false;

@@ -82,6 +82,7 @@
 	squareColor = 0
 	allowFightback = true
 	fistBaseAttack = 7
+	optionalWarAttackableAlly = false
 
 	-- Connection config
 	worldId = 0
@@ -236,7 +237,7 @@
 	houseTileLimit = 0
 
 	-- Premium-related
-	freePremium = false
+	freePremium = true
 	premiumForPromotion = true
 
 	-- Blessings
