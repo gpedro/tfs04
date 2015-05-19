@@ -15,7 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
 #include "otpch.h"
+#ifdef _MSC_VER
+#include <errmsg.h>
+#else
 #include <mysql/errmsg.h>
+#endif
 #include <iostream>
 
 #include "database.h"

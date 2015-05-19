@@ -25,7 +25,6 @@
 #define SOFTWARE_NAME "The Forgotten Server"
 #define SOFTWARE_VERSION "0.4_DEV"
 #define SOFTWARE_PROTOCOL "8.6"
-
 #define VERSION_DATABASE 25
 
 #undef MULTI_SQL_DRIVERS
@@ -39,11 +38,8 @@
 	#define	__FUNCTION__ __func__
 #endif
 
-#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-#define CRYPTOPP_DEFAULT_NO_DLL
-
 #define BOOST_ASIO_ENABLE_CANCELIO 1
-#define BOOST_FILESYSTEM_VERSION 2
+#define BOOST_FILESYSTEM_VERSION 3
 #ifdef _MSC_VER
 	#define __PRETTY_FUNCTION__ __FUNCDNAME__
 	#ifndef NOMINMAX
@@ -78,11 +74,17 @@
 		typedef signed char int8_t;
 	#endif
 
+	#pragma warning(disable:4309)
+	#pragma warning(disable:4273)
+	#pragma warning(disable:4305)
+	#pragma warning(disable:4099)
 	#pragma warning(disable:4786) // msvc too long debug names in stl
 	#pragma warning(disable:4250) // 'class1' : inherits 'class2::member' via dominance
+	#pragma warning(disable:4224)
 	#pragma warning(disable:4244)
 	#pragma warning(disable:4267)
 	#pragma warning(disable:4018)
+	#pragma warning(disable:4800)
 	#pragma warning(disable:4996) // '_ftime64' : this function or variable may be unsafe
 
 	#ifndef _WIN32
@@ -139,7 +141,7 @@
 	//Windows Vista	0x0600
 	//Windows Seven 0x0601
 
-	#define _WIN32_WINNT 0x0501
+	#define _WIN32_WINNT 0x0502
 #elif defined __GNUC__
 	#define __USE_ZLIB__
 #endif

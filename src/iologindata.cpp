@@ -326,7 +326,7 @@ void IOLoginData::removePremium(Account account)
 	uint64_t timeNow = time(NULL);
 	if(account.premiumDays > 0 && account.premiumDays < 65535)
 	{
-		uint32_t days = (uint32_t)std::ceil((timeNow - account.lastDay) / 86400);
+		uint32_t days = (uint32_t)std::ceil((timeNow - account.lastDay) / 86400.);
 		if(days > 0)
 		{
 			if(account.premiumDays >= days)
@@ -1041,11 +1041,11 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 
 		uint32_t attributesSize = 0;
 		const char* attributes = propWriteStream.getStream(attributesSize);
-		char buffer[attributesSize * 3 + 100]; //MUST be (size * 2), else people can crash server when filling writable with native characters
 
-		sprintf(buffer, "%d, %d, %d, %d, %d, %s", player->getGUID(), it->first, runningId, item->getID(),
-			(int32_t)item->getSubType(), db->escapeBlob(attributes, attributesSize).c_str());
-		if(!query_insert.addRow(buffer))
+		std::stringstream ss;
+		ss << player->getGUID() << ", " << it->first << ", " << runningId << ", " << item->getID()
+			<< ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize).c_str();
+		if(!query_insert.addRow(ss))
 			return false;
 
 		if(Container* container = item->getContainer())
@@ -1069,11 +1069,11 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 
 			uint32_t attributesSize = 0;
 			const char* attributes = propWriteStream.getStream(attributesSize);
-			char buffer[attributesSize * 3 + 100]; //MUST be (size * 2), else people can crash server when filling writable with native characters
 
-			sprintf(buffer, "%d, %d, %d, %d, %d, %s", player->getGUID(), stack.second, runningId, item->getID(),
-				(int32_t)item->getSubType(), db->escapeBlob(attributes, attributesSize).c_str());
-			if(!query_insert.addRow(buffer))
+			std::stringstream ss;
+			ss << player->getGUID() << ", " << stack.second << ", " << runningId << ", " << item->getID()
+				<< ", " << (int32_t)item->getSubType() << ", " << db->escapeBlob(attributes, attributesSize).c_str();
+			if(!query_insert.addRow(ss))
 				return false;
 		}
 	}

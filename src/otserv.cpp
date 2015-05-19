@@ -124,7 +124,7 @@ bool argumentsHandler(StringVec args)
 
 		if((*it) == "--version")
 		{
-			std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl;
+			std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl << std::endl;
 			return false;
 		}
 
@@ -327,7 +327,7 @@ void otserv(StringVec, ServiceManager* services)
 	}
 #endif
 
-	std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl;
+	std::clog << SOFTWARE_NAME << ", version " << SOFTWARE_VERSION << std::endl << std::endl;
 	std::stringstream ss;
 #ifdef __DEBUG__
 	ss << " GLOBAL";
@@ -455,11 +455,6 @@ void otserv(StringVec, ServiceManager* services)
 	{
 		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_SHA512);
 		std::clog << "> Using SHA512 encryption" << std::endl;
-	}
-	else if(encryptionType == "vahash")
-	{
-		g_config.setNumber(ConfigManager::ENCRYPTION, ENCRYPTION_VAHASH);
-		std::clog << "> Using VAHash encryption" << std::endl;
 	}
 	else
 	{
