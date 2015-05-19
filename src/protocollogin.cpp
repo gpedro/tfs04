@@ -183,7 +183,7 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 	if(castAccount && !Player::castAutoList.size())
 	{
-		disconnectClient(0x0A, std::string("[Cast System]\nCurrently there are no casts available.").c_str());
+		disconnectClient(0x0A, std::string("Currently there are no casts available.").c_str());
 		return false;
 	}
 

@@ -542,7 +542,7 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 		if(Player::castAutoList.empty())
 		{
 			ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
-			disconnectClient(0x14, "[Cast System]\n\nCast not found.\nPlease refresh your login list.");
+			disconnectClient(0x14, "Cast not found.\nPlease refresh your login list.");
 			return false;
 		}
 
@@ -554,7 +554,7 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 				if(it->second->getCastingPassword() != "" && it->second->getCastingPassword() != password)
 				{
 					ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
-					disconnectClient(0x14, "[Cast System]\n\nWrong password to protected cast.");
+					disconnectClient(0x14, "Wrong password to protected cast.");
 					return false;
 				}
 			}
@@ -563,7 +563,7 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 		if(!found)
 		{
 			ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
-			disconnectClient(0x14, "[Cast System]\n\nCast not found.\nPlease refresh your login list.");
+			disconnectClient(0x14, "Cast not found.\nPlease refresh your login list.");
 			return false;
 		}
 	}
