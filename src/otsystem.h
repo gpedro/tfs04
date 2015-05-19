@@ -123,9 +123,9 @@ inline uint32_t swap_uint32(uint32_t val)
 }
 
 #if BOOST_VERSION < 104400
-#define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename()
+	#define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename()
 #else
-#define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename().string()
+	#define BOOST_DIR_ITER_FILENAME(iterator) (iterator)->path().filename().string()
 #endif
 
 #define foreach BOOST_FOREACH
