@@ -71,7 +71,7 @@ class ChatChannel
 		bool addUser(Player* player);
 		bool removeUser(Player* player);
 
-		bool talk(Player* player, SpeakClasses type, const std::string& text, uint32_t _time = 0, ProtocolGame* pg = NULL); //CA
+		bool talk(Player* player, SpeakClasses type, const std::string& text, uint32_t _time = 0, ProtocolGame* pg = NULL);
 		bool talk(std::string nick, SpeakClasses type, std::string text);
 
 	protected:
@@ -131,7 +131,7 @@ class Chat
 		bool removeUserFromChannel(Player* player, uint16_t channelId);
 		void removeUserFromAllChannels(Player* player);
 		
-        bool talkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL); //CA
+        bool talkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL);
 
 		ChatChannel* getChannel(Player* player, uint16_t channelId);
 		ChatChannel* getChannelById(uint16_t channelId);

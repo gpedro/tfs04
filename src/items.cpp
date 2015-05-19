@@ -165,7 +165,6 @@ int32_t Items::loadFromOtb(std::string file)
 		}
 	}
 
-	/* REMOVIDO POR LUANLUCIANO93
 	if(Items::dwMajorVersion == 0xFFFFFFFF)
 		std::clog << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
 	else if(Items::dwMajorVersion < 3)
@@ -178,12 +177,11 @@ int32_t Items::loadFromOtb(std::string file)
 		std::clog << "[Error - Items::loadFromOtb] New version detected, an older version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
-	else if(Items::dwMinorVersion != CLIENT_VERSION_860)
+	else if(!g_config.getBool(ConfigManager::SKIP_ITEMS_VERSION) && Items::dwMinorVersion != CLIENT_VERSION_860)
 	{
 		std::clog << "[Error - Items::loadFromOtb] Another (client) version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
-	*/
 
 	uint16_t lastId = 99;
 	for(node = f.getChildNode(node, type); node != NO_NODE; node = f.getNextNode(node, type))

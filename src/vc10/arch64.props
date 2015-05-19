@@ -3,10 +3,5 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalLibraryDirectories>$(TFS_LIBS64)</AdditionalLibraryDirectories>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

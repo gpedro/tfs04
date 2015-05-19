@@ -150,7 +150,7 @@ bool ChatChannel::removeUser(Player* player)
 	return true;
 }
 
-bool ChatChannel::talk(Player* player, SpeakClasses type, const std::string& text, uint32_t _time, ProtocolGame* pg) //CA
+bool ChatChannel::talk(Player* player, SpeakClasses type, const std::string& text, uint32_t _time, ProtocolGame* pg)
 {
 	UsersMap::iterator it = m_users.find(player->getID());
 	if(it == m_users.end())
@@ -496,7 +496,7 @@ void Chat::removeUserFromAllChannels(Player* player)
 	}
 }
 
-bool Chat::talkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg) //CA
+bool Chat::talkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg)
 {
 	if(text.empty())
 		return false;
@@ -531,8 +531,7 @@ bool Chat::talkToChannel(Player* player, SpeakClasses type, const std::string& t
 	if(isPublicChannel(channelId))
 		Manager::getInstance()->talk(player->getID(), channelId, type, text);
 
-	if(channelId != CHANNEL_GUILD || !g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT)
-		|| (text[0] != '!' && text[0] != '/'))
+	if(channelId != CHANNEL_GUILD || !g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT) || (text[0] != '!' && text[0] != '/'))
 	{
 		if(channelId == CHANNEL_GUILD)
 		{
@@ -547,7 +546,7 @@ bool Chat::talkToChannel(Player* player, SpeakClasses type, const std::string& t
 			}
 		}
 
-		return channel->talk(player, type, text, 0, pg); //CA
+		return channel->talk(player, type, text, 0, pg);
 	}
 
 	if(!player->getGuildId())

@@ -404,7 +404,6 @@ uint32_t CreatureEvent::executeLogin(Player* player)
 	}
 }
 
-//Função add por luanluciano93
 uint32_t CreatureEvent::executeMoveItem(Player* player, Item* item, uint8_t count, const Position& fromPos, const Position& toPos, Item* toContainer, Item* fromContainer, int16_t fstack)
 {
     //onMoveItem(cid, item, count, toContainer, fromContainer, fromPos, toPos)

@@ -457,10 +457,10 @@ class Game
 		bool playerMoveItem(uint32_t playerId, const Position& fromPos,
 			uint16_t spriteId, int16_t fromStackpos, const Position& toPos, uint8_t count);
 		bool playerMove(uint32_t playerId, Direction dir);
-		bool playerCreatePrivateChannel(uint32_t playerId, ProtocolGame* pg); //CA
+		bool playerCreatePrivateChannel(uint32_t playerId, ProtocolGame* pg);
 		bool playerChannelInvite(uint32_t playerId, const std::string& name);
 		bool playerChannelExclude(uint32_t playerId, const std::string& name);
-		bool playerRequestChannels(uint32_t playerId, ProtocolGame* pg); //CA
+		bool playerRequestChannels(uint32_t playerId, ProtocolGame* pg);
 		bool playerOpenChannel(uint32_t playerId, uint16_t channelId);
 		bool playerCloseChannel(uint32_t playerId, uint16_t channelId);
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
@@ -506,7 +506,7 @@ class Game
 		bool playerTurn(uint32_t playerId, Direction dir);
 		bool playerRequestOutfit(uint32_t playerId);
         bool playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
-            const std::string& receiver, const std::string& text, ProtocolGame* pg = NULL); //CA
+            const std::string& receiver, const std::string& text, ProtocolGame* pg = NULL);
 		bool playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
 		bool playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		bool playerJoinParty(uint32_t playerId, uint32_t leaderId);
@@ -623,7 +623,7 @@ class Game
 		bool playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
 		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text);
-        bool playerTalkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL); //CA
+        bool playerTalkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
 		bool playerReportRuleViolation(Player* player, const std::string& text);
 		bool playerContinueReport(Player* player, const std::string& text);

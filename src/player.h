@@ -55,7 +55,7 @@ struct CastBan
 	}
 };
 
-struct PlayerCast //CA
+struct PlayerCast
 {
 	uint16_t curId;
 	bool isCasting;
@@ -65,7 +65,8 @@ struct PlayerCast //CA
 	std::list<CastBan> muted;
 	std::list<CastBan> bans;
 
-    PlayerCast() {
+    PlayerCast()
+	{
 		isCasting = false;
 		curId = 1;
 	}
@@ -178,7 +179,7 @@ class Player : public Creature, public Cylinder
 		bool getCastingState() const {return cast.isCasting;};
 		virtual const std::string& getCastingPassword() const {return cast.password;};
 
-        PlayerCast getCast() {return cast;} //CA
+        PlayerCast getCast() {return cast;}
 
 		void setCasting(bool c);
 		void setCastPassword(std::string p) {cast.password = p;};
@@ -296,7 +297,7 @@ class Player : public Creature, public Cylinder
 
 		static AutoList<Player> autoList;
 		
-		static AutoList<Player> castAutoList; //CA
+		static AutoList<Player> castAutoList;
 		static AutoList<ProtocolGame> cSpectators;
 		static uint32_t nextSpectator;
 		
@@ -929,7 +930,7 @@ class Player : public Creature, public Cylinder
 			{if(client) client->sendTextWindow(windowTextId, item, maxLen, canWrite);}
 		void sendTextWindow(uint32_t itemId, const std::string& text) const
 			{if(client) client->sendTextWindow(windowTextId, itemId, text);}
-		void sendToChannel(Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId, uint32_t time = 0, ProtocolGame* pg = NULL) const //CA
+		void sendToChannel(Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId, uint32_t time = 0, ProtocolGame* pg = NULL) const
 			{if(client) {client->sendToChannel(creature, type, text, channelId, time, pg);
 				for(AutoList<ProtocolGame>::const_iterator it = cSpectators.begin(); it != cSpectators.end(); ++it) if(it->second->getPlayer() == this)
 					it->second->sendToChannel(creature, type, text, channelId, time, pg);
@@ -1019,8 +1020,8 @@ class Player : public Creature, public Cylinder
 		Container transferContainer;
 
 	protected:
-		PlayerCast cast; //CA
-              
+		PlayerCast cast;
+
 		void checkTradeState(const Item* item);
 
 		bool gainExperience(double& gainExp, bool fromMonster);

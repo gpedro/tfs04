@@ -2090,7 +2090,7 @@ void LuaInterface::registerFunctions()
 	lua_register(m_luaState, "getCreatureName", LuaInterface::luaGetCreatureName);
 	
 	//getCreaturePathTo(cid, pos, maxSearchDist)
-	lua_register(m_luaState, "getCreaturePathTo", LuaInterface::luaGetCreaturePathTo); // add por luanluciano93
+	lua_register(m_luaState, "getCreaturePathTo", LuaInterface::luaGetCreaturePathTo);
 
 	//getCreatureSpeed(cid)
 	lua_register(m_luaState, "getCreatureSpeed", LuaInterface::luaGetCreatureSpeed);
@@ -8278,7 +8278,7 @@ int32_t LuaInterface::luaGetCreatureName(lua_State* L)
 	return 1;
 }
 
-int32_t LuaInterface::luaGetCreaturePathTo(lua_State* L) // add por luanluciano93
+int32_t LuaInterface::luaGetCreaturePathTo(lua_State* L)
 {
 	//getCreaturePathTo(cid, pos, maxSearchDist)
     ScriptEnviroment* env = getEnv();

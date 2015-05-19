@@ -86,11 +86,12 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 	std::string name = msg.getString(), password = msg.getString();
 	bool castAccount = false;
-	if(name.empty()) //CA
+	if(name.empty())
 	{
 		if(g_config.getBool(ConfigManager::ENABLE_CAST))
         	castAccount = true;
- 	    else {
+ 	    else
+		{
 			if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER))
 			{
 				disconnectClient(0x0A, "Invalid account name.");
@@ -133,7 +134,7 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 	}
 
 	uint32_t id = 1;
-	if(!IOLoginData::getInstance()->getAccountId(name, id) && !castAccount) //CA
+	if(!IOLoginData::getInstance()->getAccountId(name, id) && !castAccount)
 	{
 		ConnectionManager::getInstance()->addAttempt(clientIp, protocolId, false);
 		disconnectClient(0x0A, "Invalid account name.");
@@ -141,7 +142,7 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 	}
 
 	Account account = IOLoginData::getInstance()->loadAccount(id);
-	if(!encryptTest(password, account.password) && !castAccount) //CA
+	if(!encryptTest(password, account.password) && !castAccount)
 	{
 		ConnectionManager::getInstance()->addAttempt(clientIp, protocolId, false);
 		disconnectClient(0x0A, "Invalid password.");
@@ -173,14 +174,14 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 	// remove premium days
 	IOLoginData::getInstance()->removePremium(account);
-	if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size() && !castAccount) //CA
+	if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && !account.charList.size() && !castAccount)
 	{
 		disconnectClient(0x0A, std::string("This account does not contain any character yet.\nCreate a new character on the "
 			+ g_config.getString(ConfigManager::SERVER_NAME) + " website at " + g_config.getString(ConfigManager::URL) + ".").c_str());
 		return false;
 	}
 
-	if(castAccount && !Player::castAutoList.size()) //CA
+	if(castAccount && !Player::castAutoList.size())
 	{
 		disconnectClient(0x0A, std::string("[Cast System]\nCurrently there are no casts available.").c_str());
 		return false;
@@ -208,7 +209,7 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 		//Add char list
 		output->put<char>(0x64);
-		if(castAccount) //CA
+		if(castAccount)
 			output->put<char>(Player::castAutoList.size());
 	    else if(g_config.getBool(ConfigManager::ACCOUNT_MANAGER) && id != 1)
 		{
@@ -221,7 +222,8 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 		else
 			output->put<char>((uint8_t)account.charList.size());
 
-		if(!castAccount) { //CA
+		if(!castAccount)
+		{
 			for(Characters::iterator it = account.charList.begin(); it != account.charList.end(); ++it)
 			{
 				#ifndef __LOGIN_SERVER__

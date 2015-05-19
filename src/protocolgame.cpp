@@ -97,7 +97,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 
 	if((!_player || name == "Account Manager" || g_config.getNumber(ConfigManager::ALLOW_CLONES) > (int32_t)players.size()) && !castAccount)
 	{
-	    isCast = false; //CA
+	    isCast = false;
 		player = new Player(name, this);
 		player->addRef();
 
@@ -256,7 +256,7 @@ bool ProtocolGame::login(const std::string& name, uint32_t id, const std::string
 	}
 	else if(_player->client)
 	{
-		if((m_eventConnect || !g_config.getBool(ConfigManager::REPLACE_KICK_ON_LOGIN)) && !castAccount) //CA
+		if((m_eventConnect || !g_config.getBool(ConfigManager::REPLACE_KICK_ON_LOGIN)) && !castAccount)
 		{
 			//A task has already been scheduled just bail out (should not be overriden)
 			disconnectClient(0x14, "You are already logged in.");
@@ -288,11 +288,13 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 	if(!player)
 		return false;
 		
-	if(getIsCast() && !player->isAccountManager()) {
+	if(getIsCast() && !player->isAccountManager())
+	{
 		PlayerCast pc = player->getCast();
-		for(AutoList<ProtocolGame>::iterator it = Player::cSpectators.begin(); it != Player::cSpectators.end(); ++it) //CA
+		for(AutoList<ProtocolGame>::iterator it = Player::cSpectators.begin(); it != Player::cSpectators.end(); ++it)
 			if(it->second == this)
-				if(Connection_ptr connection = it->second->getConnection()) {
+				if(Connection_ptr connection = it->second->getConnection())
+				{
 					PrivateChatChannel* channel = g_chat.getPrivateChannel(player);
 					if(channel) {
 						channel->talk("", SPEAK_CHANNEL_RA, (getViewerName() + " has left the cast."));
@@ -335,7 +337,7 @@ bool ProtocolGame::logout(bool displayEffect, bool forceLogout)
 			g_game.addMagicEffect(player->getPosition(), MAGIC_EFFECT_POFF);
 	}
 
-	player->kickCastViewers(); //CA
+	player->kickCastViewers();
 
 	if(Connection_ptr connection = getConnection())
 		connection->close();
@@ -354,15 +356,18 @@ bool ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem,
 	m_eventConnect = 0;
 
 	Player* _player = g_game.getPlayerByID(playerId);
-	if(castAccount) {  //CA
+	if(castAccount)
+	{
 		PlayerCast pc = _player->getCast();
 		for(std::list<CastBan>::iterator it = pc.bans.begin(); it != pc.bans.end(); ++it)
-			if(it->ip == getIP()) {
+			if(it->ip == getIP())
+			{
 				disconnectClient(0x14, "You are banned from this cast.");
 				return false;
 			}
 
-		if(_player->getCastViewerCount() >= 50) {
+		if(_player->getCastViewerCount() >= 50)
+		{
 			disconnectClient(0x14, "The cast reached the maximum viewer limit (50).");
 			return false;
 		}
@@ -375,11 +380,13 @@ bool ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem,
 		sendAddCreature(_player, _player->getPosition(), _player->getTile()->getClientIndexOfThing(_player, _player));
 
 		PrivateChatChannel* channel = g_chat.getPrivateChannel(_player);
-		if(channel) {
+		if(channel)
+		{
 			sendCreatePrivateChannel(channel->getId(), channel->getName());
 			channel->talk("", SPEAK_CHANNEL_RA, (getViewerName() + " has joined the cast."));
 			sendCreatureSay(player, SPEAK_PRIVATE, "Cast communication is turned on.");
-		} else 
+		}
+		else 
 			sendCreatureSay(player, SPEAK_PRIVATE, "Cast communication is turned off.");
 		return true;
 	}
@@ -479,11 +486,12 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 	}
 
 	bool castAccount = false;
-	if(name.empty()) //CA
+	if(name.empty())
 	{  
 		if(g_config.getBool(ConfigManager::ENABLE_CAST))
         	castAccount = true;
- 	    else {
+ 	    else
+		{
 			if(!g_config.getBool(ConfigManager::ACCOUNT_MANAGER))
 			{
 				disconnectClient(0x0A, "Invalid account name.");
@@ -520,17 +528,19 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 	}
 
 	uint32_t id = 1;
-	if(!IOLoginData::getInstance()->getAccountId(name, id) && !castAccount) //CA
+	if(!IOLoginData::getInstance()->getAccountId(name, id) && !castAccount)
 	{
 		ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 		disconnectClient(0x14, "Invalid account name.");
 		return false;
 	}
 
-	if (castAccount) { //CA
+	if (castAccount)
+	{
 		bool found = false;
 
-		if(Player::castAutoList.empty()) {
+		if(Player::castAutoList.empty())
+		{
 			ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 			disconnectClient(0x14, "[Cast System]\n\nCast not found.\nPlease refresh your login list.");
 			return false;
@@ -538,9 +548,11 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 
 		for(AutoList<Player>::iterator it = Player::castAutoList.begin(); it != Player::castAutoList.end(); ++it)
 		{
-			if (it->second->getName() == character) {
+			if (it->second->getName() == character)
+			{
 				found = true;
-				if(it->second->getCastingPassword() != "" && it->second->getCastingPassword() != password) {
+				if(it->second->getCastingPassword() != "" && it->second->getCastingPassword() != password)
+				{
 					ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 					disconnectClient(0x14, "[Cast System]\n\nWrong password to protected cast.");
 					return false;
@@ -548,7 +560,8 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 			}
 		}
 
-		if(!found) {
+		if(!found)
+		{
 			ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 			disconnectClient(0x14, "[Cast System]\n\nCast not found.\nPlease refresh your login list.");
 			return false;
@@ -556,7 +569,7 @@ bool ProtocolGame::parseFirstPacket(NetworkMessage& msg)
 	}
 
 	std::string hash;
-	if((!IOLoginData::getInstance()->getPassword(id, hash, character) || !encryptTest(password, hash)) && !castAccount) //CA
+	if((!IOLoginData::getInstance()->getPassword(id, hash, character) || !encryptTest(password, hash)) && !castAccount)
 	{
 		ConnectionManager::getInstance()->addAttempt(getIP(), protocolId, false);
 		disconnectClient(0x14, "Invalid password.");
@@ -603,7 +616,8 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 	if(player->isRemoved() && recvbyte != 0x14)
 		return;
 		
-    if(isCast && !player->isAccountManager()) { //CA
+    if(isCast && !player->isAccountManager())
+	{
 		switch(recvbyte)
 		{
 			case 0x14:
@@ -1142,7 +1156,7 @@ void ProtocolGame::parseLogout(NetworkMessage&)
 
 void ProtocolGame::parseCreatePrivateChannel(NetworkMessage&)
 {
-	addGameTask(&Game::playerCreatePrivateChannel, player->getID(), this); //CA
+	addGameTask(&Game::playerCreatePrivateChannel, player->getID(), this);
 }
 
 void ProtocolGame::parseChannelInvite(NetworkMessage& msg)
@@ -1159,7 +1173,7 @@ void ProtocolGame::parseChannelExclude(NetworkMessage& msg)
 
 void ProtocolGame::parseGetChannels(NetworkMessage&)
 {
-	addGameTask(&Game::playerRequestChannels, player->getID(), this); //CA
+	addGameTask(&Game::playerRequestChannels, player->getID(), this);
 }
 
 void ProtocolGame::parseOpenChannel(NetworkMessage& msg)
@@ -1409,7 +1423,7 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 		return;
 	}
 
-	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerSay, player->getID(), channelId, type, receiver, text, this); //CA
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerSay, player->getID(), channelId, type, receiver, text, this);
 }
 
 void ProtocolGame::parseFightModes(NetworkMessage& msg)
@@ -1844,7 +1858,7 @@ void ProtocolGame::sendCreatePrivateChannel(uint16_t channelId, const std::strin
 	}
 }
 
-void ProtocolGame::sendChannelsDialog() //CA
+void ProtocolGame::sendChannelsDialog()
 {
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(msg)
@@ -1852,11 +1866,14 @@ void ProtocolGame::sendChannelsDialog() //CA
 		TRACK_MESSAGE(msg);
 		msg->put<char>(0xAB);
 		
-		if(getIsCast()) {
+		if(getIsCast())
+		{
 			msg->put<char>(1);
 			msg->put<uint16_t>(CHANNEL_PRIVATE);
 			msg->putString("Cast Channel");
-		} else {
+		}
+		else
+		{
     		ChannelList list = g_chat.getChannelList(player);
     		msg->put<char>(list.size());
     		
@@ -2130,31 +2147,31 @@ void ProtocolGame::sendCreatureTurn(const Creature* creature, int16_t stackpos)
 
 void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, Position* pos/* = NULL*/)
 {
-	if(isCast && !(creature->getPlayer() == player)) //CA
+	if(isCast && !(creature->getPlayer() == player))
 		return;
 		
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(msg)
 	{
 		TRACK_MESSAGE(msg);
-		AddCreatureSpeak(msg, creature, type, text, 0, 0, pos, NULL); //CA
+		AddCreatureSpeak(msg, creature, type, text, 0, 0, pos, NULL);
 	}
 }
 
 void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId, uint32_t time /*= 0*/, ProtocolGame* pg)
 {
-	ChatChannel* channel = NULL; //CA 
+	ChatChannel* channel = NULL; 
 	if(creature != NULL && creature->getPlayer())
 		channel = g_chat.getPrivateChannel((Player*)creature->getPlayer());
 
-	if(pg != NULL && pg->getIsCast() && ((channel != NULL && channelId != channel->getId()) || !channel)) //CA
+	if(pg != NULL && pg->getIsCast() && ((channel != NULL && channelId != channel->getId()) || !channel))
 		return;
 		
 	NetworkMessage_ptr msg = getOutputBuffer();
 	if(msg)
 	{
 		TRACK_MESSAGE(msg);
-		AddCreatureSpeak(msg, creature, type, text, channelId, time, NULL, pg); //CA
+		AddCreatureSpeak(msg, creature, type, text, channelId, time, NULL, pg);
 	}
 }
 
@@ -2906,7 +2923,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage_ptr msg)
 }
 
 void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* creature, SpeakClasses type,
-	std::string text, uint16_t channelId, uint32_t time/*= 0*/, Position* pos/* = NULL*/, ProtocolGame* pg) //CA
+	std::string text, uint16_t channelId, uint32_t time/*= 0*/, Position* pos/* = NULL*/, ProtocolGame* pg)
 {
 	msg->put<char>(0xAA);
 	if(creature)
@@ -2924,9 +2941,8 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 			type = creature->getSpeakType();
 
 		std::string pname;
-		if(speaker && pg != NULL && pg->isCast) {//CA 
+		if(speaker && pg != NULL && pg->isCast)
 			pname = pg->viewerName;
-		}
 		else 
 			pname = creature->getName();
 
@@ -2939,12 +2955,11 @@ void ProtocolGame::AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* crea
 				msg->putString("Gamemaster");
 				break;
 			default:
-				msg->putString(!creature->getHideName() ? pname: ""); //CA
+				msg->putString(!creature->getHideName() ? pname: "");
 				break;
 		}
 
-		if(speaker && type != SPEAK_RVR_ANSWER && !speaker->isAccountManager()
-			&& !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel) && (pg == NULL || pg != NULL && !pg->getIsCast())) //CA
+		if(speaker && type != SPEAK_RVR_ANSWER && !speaker->isAccountManager() && !speaker->hasCustomFlag(PlayerCustomFlag_HideLevel) && (pg == NULL || pg != NULL && !pg->getIsCast()))
 			msg->put<uint16_t>(speaker->getPlayerInfo(PLAYERINFO_LEVEL));
 		else
 			msg->put<uint16_t>(0x00);

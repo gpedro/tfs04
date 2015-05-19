@@ -324,7 +324,6 @@ class LuaInterface
 		virtual void registerFunctions();
 
 		//lua functions
-        //CA
 		static int32_t luaGetCastsOnline(lua_State* L);
 		static int32_t luaDoPlayerSetCastPassword(lua_State* L);
 		static int32_t luaDoPlayerSetCastDescription(lua_State* L);
@@ -621,7 +620,7 @@ class LuaInterface
 		static int32_t luaSetItemOutfit(lua_State* L);
 		static int32_t luaGetCreatureLastPosition(lua_State* L);
 		static int32_t luaGetCreatureName(lua_State* L);
-		static int32_t luaGetCreaturePathTo(lua_State* L); // add por luanluciano93
+		static int32_t luaGetCreaturePathTo(lua_State* L);
 		static int32_t luaGetCreatureMaster(lua_State* L);
 		static int32_t luaGetCreatureSummons(lua_State* L);
 		static int32_t luaGetHighscoreString(lua_State* L);

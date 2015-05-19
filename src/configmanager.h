@@ -166,8 +166,8 @@ class ConfigManager
 			LOOT_MESSAGE,
 			LOOT_MESSAGE_TYPE,
 			NAME_REPORT_TYPE,
-			HEALTH_HEALING_COLOR, /* modificando cor do heal-life pelo config.lua | luanluciano93 */
-			MANA_HEALING_COLOR, /* modificando cor do heal-mana pelo config.lua | luanluciano93 */
+			HEALTH_HEALING_COLOR,
+			MANA_HEALING_COLOR,
 			HOUSE_CLEAN_OLD,
 			MANAGER_CONNECTIONS_LIMIT,
 			ADMIN_CONNECTIONS_LIMIT,
@@ -284,6 +284,7 @@ class ConfigManager
 			ADDONS_PREMIUM,
 			OPTIONAL_WAR_ATTACK_ALLY,
 			ENABLE_CAST,
+			SKIP_ITEMS_VERSION,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

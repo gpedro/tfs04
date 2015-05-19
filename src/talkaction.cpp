@@ -132,7 +132,7 @@ bool TalkActions::registerEvent(Event* event, xmlNodePtr p, bool override)
 	return true;
 }
 
-bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std::string& words, bool ignoreAccess, ProtocolGame* pg) //CA
+bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std::string& words, bool ignoreAccess, ProtocolGame* pg)
 {
 	std::string cmd[TALKFILTER_LAST] = {words, words, words}, param[TALKFILTER_LAST] = {"", "", ""};
 	std::string::size_type loc = words.find('"', 0);
@@ -171,55 +171,64 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 	if(!talkAction && defaultTalkAction)
 		talkAction = defaultTalkAction;
 
-	if(pg != NULL && pg->getIsCast() && creature->getPlayer()) { //CA
+	if(pg != NULL && pg->getIsCast() && creature->getPlayer())
+	{
 		Player* p = creature->getPlayer();
-		if(pg != NULL && words[0] == '/' && pg->getIsCast()) {
-				if(words.substr(1, 4) == "nick") {
+		if(pg != NULL && words[0] == '/' && pg->getIsCast())
+		{
+				if(words.substr(1, 4) == "nick")
+				{
 						if(words.length() > 6)
 						{
 							std::string param = words.substr(6);
 							trimString(param);
-							if(param.length() > 10) {
+							if(param.length() > 10)
+							{
 								//pg->sendChannelMessage("[Chat System]", "This name is too long. (Max 8. letters)", MSG_STATUS_DEFAULT, privchannel->getId());
 								pg->publicSendMessage(p, SPEAK_PRIVATE, "This name is too long.");
 								return true;
 							}
-							else if(param.length() <= 2) {
+							else if(param.length() <= 2)
+							{
 								//pg->sendChannelMessage("[Chat System]", "This name is too short. (Min 3. letters)", MSG_STATUS_DEFAULT, privchannel->getId());
 								pg->publicSendMessage(p, SPEAK_PRIVATE, "This name is too short.");
 								return true;
 							}
 
-							if(!isValidName(param, false)) {
+							if(!isValidName(param, false))
+							{
 								pg->publicSendMessage(p, SPEAK_PRIVATE, "This name is invalid.");
-							//	pg->sendChannelMessage("[Chat System]", "This name contains invalid characters.", MSG_STATUS_DEFAULT, privchannel->getId());
+								//pg->sendChannelMessage("[Chat System]", "This name contains invalid characters.", MSG_STATUS_DEFAULT, privchannel->getId());
 								return true;
 							}
 
 							for(AutoList<ProtocolGame>::iterator it = Player::cSpectators.begin(); it != Player::cSpectators.end(); ++it)
-								if(it->second->getViewerName() == param && it->second->getPlayer() == p) {
+								if(it->second->getViewerName() == param && it->second->getPlayer() == p)
+								{
 									pg->publicSendMessage(p, SPEAK_PRIVATE, "This name is already in use.");
 									return true;
 								}
 					
 							PrivateChatChannel* channel = g_chat.getPrivateChannel(p);
-							if(channel) {
+							if(channel)
 								channel->talk("", SPEAK_CHANNEL_RA, (pg->getViewerName() + "'s new name is: " + param)); //addedLast
-							}
+
 							pg->setViewerName(param);
 							pg->publicSendMessage(p, SPEAK_PRIVATE, "Your name was set to: " + param);
 						}
 						else 
 							pg->publicSendMessage(p, SPEAK_PRIVATE, "Invalid param.");
 				}
-				else if(words.substr(1, 4) == "info") {
+				else if(words.substr(1, 4) == "info")
+				{
 					PlayerCast pc = p->getCast();
 
 					std::stringstream ss, sl;
 					ss << Player::cSpectators.size() << " Viewers: ";
 					bool first = true;
 					for(AutoList<ProtocolGame>::iterator it = Player::cSpectators.begin(); it != Player::cSpectators.end(); ++it) {
-						if(it->second->getPlayer() == p) {
+						if(it->second->getPlayer() == p)
+						{
 							sl.clear();
 							sl << ss;
 							if(first) 
@@ -228,7 +237,8 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 								ss << ", ";
 
 							ss << it->second->getViewerName();
-							if(ss.str().length() > 250) {
+							if(ss.str().length() > 250)
+							{
 								ss.clear();
 								ss << sl << "...";
 								break;
@@ -239,7 +249,6 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 					std::string out = ss.str();
 					pg->publicSendMessage(p, SPEAK_PRIVATE, out);
 				}
-
 				return true;
 			}
 		return false;
