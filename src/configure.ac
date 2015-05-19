@@ -7,7 +7,7 @@ AM_CONFIG_HEADER([config.h])
 AC_PROG_CXX
 AC_LANG(C++)
 # add own flags in here
-OPTIONAL_FLAGS="-D__WAR_SYSTEM__"
+OPTIONAL_FLAGS=""
 
 # check if we want server diag enabled
 serverDiag=no

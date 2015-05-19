@@ -533,7 +533,6 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 			player->rankName = result->getDataString("rank");
 			player->guildNick = nick;
 			result->free();
-#ifdef __WAR_SYSTEM__
 
 			query.str("");
 			query << "SELECT `id`, `guild_id`, `enemy_id` FROM `guild_wars` WHERE (`guild_id` = "
@@ -560,7 +559,6 @@ bool IOLoginData::loadPlayer(Player* player, const std::string& name, bool preLo
 				while(result->next());
 				result->free();
 			}
-#endif
 		}
 	}
 	else if(g_config.getBool(ConfigManager::INGAME_GUILD_MANAGEMENT))
@@ -1099,22 +1097,13 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 	if(size > tmp)
 		size = tmp;
 
-#ifdef __WAR_SYSTEM__
 	DeathList wl;
-#endif
 	uint64_t deathId = db->getLastInsertId();
 	for(DeathList::const_iterator it = dl.begin(); i < size && it != dl.end(); ++it, ++i)
 	{
 		query.str("");
-		query << "INSERT INTO `killers` (`death_id`, `final_hit`, `unjustified`"
-#ifdef __WAR_SYSTEM__
-			<< ", `war`"
-#endif
-			<< ") VALUES (" << deathId << ", " << it->isLast() << ", " << it->isUnjustified()
-#ifdef __WAR_SYSTEM__
-			<< ", " << it->getWar().war
-#endif
-			<< ")";
+		query << "INSERT INTO `killers` (`death_id`, `final_hit`, `unjustified`" << ", `war`"
+			<< ") VALUES (" << deathId << ", " << it->isLast() << ", " << it->isUnjustified() << ", " << it->getWar().war << ")";
 		if(!db->query(query.str()))
 			return false;
 
@@ -1132,11 +1121,9 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 
 			if(player)
 			{
-#ifdef __WAR_SYSTEM__
 				if(_player->isEnemy(player, false))
 					wl.push_back(*it);
 
-#endif
 				query.str("");
 				query << "INSERT INTO `player_killers` (`kill_id`, `player_id`) VALUES ("
 					<< killId << ", " << player->getGUID() << ")";
@@ -1158,11 +1145,9 @@ bool IOLoginData::playerDeath(Player* _player, const DeathList& dl)
 				return false;
 		}
 	}
-#ifdef __WAR_SYSTEM__
 
 	if(!wl.empty())
 		IOGuild::getInstance()->frag(_player, deathId, wl);
-#endif
 
 	return trans.commit();
 }
@@ -1640,11 +1625,8 @@ bool IOLoginData::getUnjustifiedDates(uint32_t guid, std::vector<time_t>& dateLi
 	DBQuery query;
 	query << "SELECT `pd`.`date` FROM `player_killers` pk LEFT JOIN `killers` k ON `pk`.`kill_id` = `k`.`id`"
 		<< "LEFT JOIN `player_deaths` pd ON `k`.`death_id` = `pd`.`id` WHERE `pk`.`player_id` = " << guid
-		<< " AND `k`.`unjustified` = 1 AND `pd`.`date` >= " << (_time - (30 * 86400));
-#ifdef __WAR_SYSTEM__
+		<< " AND `k`.`unjustified` = 1 AND `pd`.`date` >= " << (_time - (30 * 86400)) << " AND `k`.`war` = 0";
 
-	query << " AND `k`.`war` = 0";
-#endif
 	DBResult* result;
 	if(!(result = db->storeQuery(query.str())))
 		return false;
