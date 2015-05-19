@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="TheForgottenServer" />
+		<Option title="theforgottenserver" />
 		<Option pch_mode="0" />
 		<Option compiler="gcc" />
 		<Build>
@@ -35,6 +35,7 @@
 					<Add option="-lz" />
 					<Add option="-lwsock32" />
 					<Add option="-lws2_32" />
+					<Add option="-leay32" />
 					<Add option="-Wl,-Map=C:\theforgottenserver\theforgottenserver.map" />
 				</Linker>
 			</Target>
@@ -64,6 +65,7 @@
 					<Add option="-lz" />
 					<Add option="-lwsock32" />
 					<Add option="-lws2_32" />
+					<Add option="-leay32" />
 				</Linker>
 			</Target>
 		</Build>

@@ -18,12 +18,12 @@ FILETYPE VFT_APP
 		 {
 			 VALUE "CompanyName", "OtLand.net"
 			 VALUE "FileVersion", "0.4"
-			 VALUE "FileDescription", "The Forgotten Server"
+			 VALUE "FileDescription", "theforgottenserver"
 			 VALUE "InternalName", ""
 			 VALUE "LegalCopyright", ""
 			 VALUE "LegalTrademarks", ""
-			 VALUE "OriginalFilename", "The Forgotten Server.exe"
-			 VALUE "ProductName", "The Forgotten Server"
+			 VALUE "OriginalFilename", "theforgottenserver.exe"
+			 VALUE "ProductName", "theforgottenserver"
 			 VALUE "ProductVersion", "0.4"
 		 }
 	 }

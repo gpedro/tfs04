@@ -12,12 +12,12 @@
 #define VER_BUILD	0
 #define COMPANY_NAME	"OtLand.net"
 #define FILE_VERSION	"0.4"
-#define FILE_DESCRIPTION	"The Forgotten Server"
+#define FILE_DESCRIPTION	"theforgottenserver"
 #define INTERNAL_NAME	""
 #define LEGAL_COPYRIGHT	""
 #define LEGAL_TRADEMARKS	""
-#define ORIGINAL_FILENAME	"The Forgotten Server.exe"
-#define PRODUCT_NAME	"The Forgotten Server"
+#define ORIGINAL_FILENAME	"theforgottenserver.exe"
+#define PRODUCT_NAME	"theforgottenserver"
 #define PRODUCT_VERSION	"0.4"
 
 #endif /*THEFORGOTTENSERVER_PRIVATE_H*/
