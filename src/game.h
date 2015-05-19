@@ -505,8 +505,8 @@ class Game
 		bool playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		bool playerTurn(uint32_t playerId, Direction dir);
 		bool playerRequestOutfit(uint32_t playerId);
-        bool playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
-            const std::string& receiver, const std::string& text, ProtocolGame* pg = NULL);
+		bool playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
+			const std::string& receiver, const std::string& text, ProtocolGame* pg = NULL);
 		bool playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
 		bool playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		bool playerJoinParty(uint32_t playerId, uint32_t leaderId);
@@ -623,7 +623,7 @@ class Game
 		bool playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
 		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text);
-        bool playerTalkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL);
+		bool playerTalkToChannel(Player* player, SpeakClasses type, const std::string& text, uint16_t channelId, ProtocolGame* pg = NULL);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
 		bool playerReportRuleViolation(Player* player, const std::string& text);
 		bool playerContinueReport(Player* player, const std::string& text);

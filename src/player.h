@@ -65,7 +65,7 @@ struct PlayerCast
 	std::list<CastBan> muted;
 	std::list<CastBan> bans;
 
-    PlayerCast()
+	PlayerCast()
 	{
 		isCasting = false;
 		curId = 1;
