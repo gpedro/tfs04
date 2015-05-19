@@ -3330,7 +3330,6 @@ bool Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_BUY))
 		return false;
 
-	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 1))
 		player->addCondition(conditiontrade);
 
 	merchant->onPlayerTrade(player, SHOPEVENT_BUY, onBuy, it.id, subType, amount, ignoreCap, inBackpacks);
@@ -3362,7 +3361,6 @@ bool Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 	if(!player->canShopItem(it.id, subType, SHOPEVENT_SELL))
 		return false;
 
-	if(Condition* conditiontrade = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 500, 0, false, 2))
 		player->addCondition(conditiontrade);
 
 	merchant->onPlayerTrade(player, SHOPEVENT_SELL, onSell, it.id, subType, amount);
