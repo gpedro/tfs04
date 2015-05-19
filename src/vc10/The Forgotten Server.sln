@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tfs", "tfs.vcxproj", "{0CD4EBB7-651D-C19A-B858-1BC1A2ADAECA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "The Forgotten Server", "The Forgotten Server.vcxproj", "{0CD4EBB7-651D-C19A-B858-1BC1A2ADAECA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
