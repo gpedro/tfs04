@@ -49,7 +49,8 @@ struct CastBan
 	std::string name;
 	uint32_t ip;
 
-	CastBan(std::string n, uint32_t _ip) {
+	CastBan(std::string n, uint32_t _ip)
+	{
 		name = n;
 		ip = _ip;
 	}
@@ -184,15 +185,12 @@ class Player : public Creature, public Cylinder
 		void setCasting(bool c);
 		void setCastPassword(std::string p) {cast.password = p;};
 
-		void setCastDescription(std::string desc) {
-			cast.description = desc;
-		}
+		void setCastDescription(std::string desc) {cast.description = desc;}
 
-		virtual const std::string& getCastDescription() const {
-			return cast.description;
-		}
+		virtual const std::string& getCastDescription() const {return cast.description;}
 
-		void addCastViewer(ProtocolGame* pg) {
+		void addCastViewer(ProtocolGame* pg)
+		{
 			cSpectators[nextSpectator] = pg;
 			nextSpectator++;
 
@@ -201,19 +199,21 @@ class Player : public Creature, public Cylinder
 			pg->viewerName = ss.str().c_str();
 			cast.curId++;
 		}
-		void removeCastViewer(uint32_t id) {
-			cSpectators.erase(id);
-		}
 
-		uint32_t getCastIpByName(std::string n) {
-			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it) {
+		void removeCastViewer(uint32_t id) {cSpectators.erase(id);}
+
+		uint32_t getCastIpByName(std::string n)
+		{
+			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it)
+			{
 				if(it->second->getViewerName() == n && it->second->getPlayer() == this)
 					return it->second->getIP();
 			}
-			return 0; // mudei aqui era return NULL
+			return false;
 		}
 
-		uint32_t getCastViewerCount() {
+		uint32_t getCastViewerCount()
+		{
 			uint32_t count = 0;
 			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it)
 					if(it->second->getPlayer() == this)
@@ -222,28 +222,33 @@ class Player : public Creature, public Cylinder
 			return count;
 		}
 
-		void kickCastViewers() {
-			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it) {
-				if(it->second->getPlayer() == this) {
+		void kickCastViewers()
+		{
+			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it)
+			{
+				if(it->second->getPlayer() == this)
+				{
 					it->second->disconnect();
 					it->second->unRef();
 					removeCastViewer(it->first);
-					//it = cSpectators.begin();
 				}
 			}
 			cast = PlayerCast();
 		}
 
-		void kickCastViewerByName(std::string n) {
+		void kickCastViewerByName(std::string n)
+		{
 			for(AutoList<ProtocolGame>::iterator it = cSpectators.begin(); it != cSpectators.end(); ++it) if(it->second->getPlayer() == this)
-				if(it->second->getViewerName() == n && it->second->getPlayer() == this) {
+				if(it->second->getViewerName() == n && it->second->getPlayer() == this)
+				{
 					it->second->disconnect();
 					it->second->unRef();
 					removeCastViewer(it->first);
 				}
 		}
 
-		bool addCastBan(std::string n) {
+		bool addCastBan(std::string n)
+		{
 			uint32_t ip = getCastIpByName(n);
 			if(!ip)
 				return false;
@@ -253,9 +258,11 @@ class Player : public Creature, public Cylinder
 			return true;
 		}
 
-		bool removeCastBan(std::string n) {
+		bool removeCastBan(std::string n)
+		{
 			for(std::list<CastBan>::iterator it = cast.bans.begin(); it != cast.bans.end(); ++it)
-				if(it->name == n) {
+				if(it->name == n)
+				{
 					cast.bans.erase(it);
 					return true;
 				}
@@ -263,7 +270,8 @@ class Player : public Creature, public Cylinder
 		}
 
 
-		bool addCastMute(std::string n) {
+		bool addCastMute(std::string n)
+		{
 			uint32_t ip = getCastIpByName(n);
 			if(!ip)
 				return false;
@@ -272,9 +280,11 @@ class Player : public Creature, public Cylinder
 			return true;
 		}
 
-		bool removeCastMute(std::string n) {
+		bool removeCastMute(std::string n)
+		{
 			for(std::list<CastBan>::iterator it = cast.muted.begin(); it != cast.muted.end(); ++it)
-				if(it->name == n) {
+				if(it->name == n)
+				{
 					cast.muted.erase(it);
 					return true;
 				}
